@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Una noche para recordar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0b0b0d;
+            color: #ffffff;
+            font-family: "DM Sans", sans-serif;
+            overflow-x: hidden;
+        }
+
+        .page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 35%),
+                #0b0b0d;
+        }
+
+        .hero {
+            min-height: 100vh;
+            padding: 35px 24px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,.06);
+            filter: blur(90px);
+            border-radius: 50%;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .eyebrow {
+            position: relative;
+            font-size: 11px;
+            letter-spacing: 4px;
+            opacity: .55;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            position: relative;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(48px, 15vw, 88px);
+            line-height: .9;
+            letter-spacing: -4px;
+            font-weight: 700;
+            max-width: 800px;
+        }
+
+        .hero-subtitle {
+            position: relative;
+            margin-top: 25px;
+            font-size: 16px;
+            opacity: .65;
+        }
+
+        .scroll {
+            position: absolute;
+            bottom: 28px;
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: .35;
+        }
+
+        main {
+            width: min(700px, 100%);
+            margin: auto;
+            padding: 0 20px 70px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        .event-card {
+            padding: 30px 24px;
+            border-radius: 28px;
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(255,255,255,.09);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .event-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: .45;
+            margin-bottom: 14px;
+        }
+
+        .date {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .place {
+            margin-top: 8px;
+            font-size: 17px;
+            opacity: .7;
+        }
+
+        .location-icon {
+            margin-right: 5px;
+        }
+
+        .rsvp {
+            display: block;
+            width: 100%;
+            margin-top: 18px;
+            padding: 17px 20px;
+            border-radius: 16px;
+            background: #ffffff;
+            color: #111111;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+
+        .rsvp:active {
+            transform: scale(.97);
+            opacity: .85;
+        }
+
+        .music-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.04);
+        }
+
+        .music-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.1);
+            font-size: 23px;
+        }
+
+        .music-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .music-label {
+            display: block;
+            font-size: 9px;
+            letter-spacing: 2px;
+            opacity: .45;
+            margin-bottom: 3px;
+        }
+
+        .music-info h3 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .music-info p {
+            margin-top: 2px;
+            font-size: 13px;
+            opacity: .55;
+        }
+
+        .music-btn {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            border: none;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #111111;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform .2s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(.9);
+        }
+
+        .music-btn.playing {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .surprise {
+            padding: 34px 24px;
+            text-align: center;
+            border-radius: 28px;
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.08),
+                rgba(255,255,255,.025)
+            );
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .surprise-small {
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: .4;
+        }
+
+        .surprise h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        .surprise p {
+            margin-top: 8px;
+            font-size: 14px;
+            opacity: .6;
+        }
+
+        .discover-btn {
+            margin-top: 22px;
+            border: 1px solid rgba(255,255,255,.2);
+            background: transparent;
+            color: white;
+            border-radius: 14px;
+            padding: 13px 22px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+        .discover-btn:active {
+            background: rgba(255,255,255,.1);
+        }
+
+        .coupon-wrapper {
+            display: none;
+            margin-top: 25px;
+            animation: appear .7s ease forwards;
+        }
+
+        .coupon-wrapper.show {
+            display: block;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .coupon {
+            position: relative;
+            padding: 35px 24px;
+            border-radius: 26px;
+            background: #f5f2e9;
+            color: #161616;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .coupon::before,
+        .coupon::after {
+            content: "";
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #0b0b0d;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .coupon::before {
+            left: -13px;
+        }
+
+        .coupon::after {
+            right: -13px;
+        }
+
+        .coupon-top {
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: .5;
+        }
+
+        .coupon h2 {
+            margin-top: 12px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 27px;
+        }
+
+        .coupon-main {
+            margin-top: 18px;
+            padding: 20px 10px;
+            border-top: 1px dashed rgba(0,0,0,.25);
+            border-bottom: 1px dashed rgba(0,0,0,.25);
+        }
+
+        .coupon-main strong {
+            display: block;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 31px;
+            letter-spacing: 1px;
+        }
+
+        .coupon-main span {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            opacity: .6;
+        }
+
+        .coupon-description {
+            margin-top: 18px;
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: .7;
+        }
+
+        footer {
+            padding: 20px 20px 40px;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: .3;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #ffffff;
+            color: #111111;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all .3s ease;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (min-width: 700px) {
+            .hero {
+                min-height: 85vh;
+            }
+
+            main {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="hero">
+
+        <div class="eyebrow">
+            YOU'RE INVITED
+        </div>
+
+        <h1>
+            Una noche<br>
+            para recordar.
+        </h1>
+
+        <p class="hero-subtitle">
+            Porque hay noches que merecen una invitación.
+        </p>
+
+        <div class="scroll">
+            DESLIZA ↓
+        </div>
+
+    </header>
+
+    <main>
+
+        <section class="event-card">
+
+            <div class="event-label">
+                LA CITA
+            </div>
+
+            <div class="date">
+                Jueves · 8 de octubre · 2026
+            </div>
+
+            <div class="place">
+                <span class="location-icon">📍</span>
+                Rock and Bowl
+            </div>
+
+            <a
+                class="rsvp"
+                href="https://wa.me/526143972023?text=Hola%2C%20quiero%20confirmar%20mi%20asistencia"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                CONFIRMAR ASISTENCIA
+            </a>
+
+        </section>
+
+        <section class="music-section">
+
+            <div class="music-icon">
+                ♪
+            </div>
+
+            <div class="music-info">
+
+                <span class="music-label">
+                    LA CANCIÓN DE ESTA NOCHE
+                </span>
+
+                <h3>
+                    Bien Hecho
+                </h3>
+
+                <p>
+                    Humbe
+                </p>
+
+            </div>
+
+            <button
+                id="musicBtn"
+                class="music-btn"
+                aria-label="Reproducir Bien Hecho de Humbe"
+            >
+                ▶
+            </button>
+
+            <audio id="musicPlayer" preload="auto">
+                <source src="bien-hecho.mp3" type="audio/mpeg">
+                Tu navegador no puede reproducir este audio.
+            </audio>
+
+        </section>
+
+        <section class="surprise">
+
+            <div class="surprise-small">
+                PERO ESPERA...
+            </div>
+
+            <h2>
+                Tenemos algo más para ti.
+            </h2>
+
+            <p>
+                Porque una noche así no podía terminar aquí.
+            </p>
+
+            <button
+                id="discoverBtn"
+                class="discover-btn"
+            >
+                DESCUBRIR
+            </button>
+
+        </section>
+
+        <section
+            id="couponWrapper"
+            class="coupon-wrapper"
+        >
+
+            <div class="coupon">
+
+                <div class="coupon-top">
+                    OH OH...
+                </div>
+
+                <h2>
+                    Una disculpa.
+                </h2>
+
+                <div class="coupon-main">
+
+                    <strong>
+                        DESAYUNO
+                    </strong>
+
+                    <span>
+                        Válido el sábado por la mañana
+                    </span>
+
+                </div>
+
+                <p class="coupon-description">
+                    Debido a los acontecimientos no ocurridos
+                    este próximo jueves, aquí tienes un pequeño detalle.
+                </p>
+
+                <p class="coupon-description">
+                    <strong>
+                        DESAYUNO · SÁBADO
+                    </strong>
+                </p>
+
+                <p class="coupon-description">
+                    Presenta esta invitación para hacer válido tu cupón.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        NOS VEMOS EN LA PISTA. 🎳
+    </footer>
+
+</div>
+
+<div id="toast" class="toast">
+    Bien Hecho · Humbe
+</div>
+
+<script>
+    const musicBtn = document.getElementById("musicBtn");
+    const musicPlayer = document.getElementById("musicPlayer");
+
+    musicBtn.addEventListener("click", async () => {
+
+        if (musicPlayer.paused) {
+
+            try {
+
+                await musicPlayer.play();
+
+                musicBtn.innerHTML = "❚❚";
+                musicBtn.classList.add("playing");
+
+                showToast("♫ Bien Hecho · Humbe");
+
+            } catch (error) {
+
+                showToast("Toca nuevamente para reproducir");
+
+            }
+
+        } else {
+
+            musicPlayer.pause();
+
+            musicBtn.innerHTML = "▶";
+            musicBtn.classList.remove("playing");
+
+        }
+
+    });
+
+    musicPlayer.addEventListener("ended", () => {
+
+        musicBtn.innerHTML = "▶";
+        musicBtn.classList.remove("playing");
+
+    });
+
+    const discoverBtn = document.getElementById("discoverBtn");
+    const couponWrapper = document.getElementById("couponWrapper");
+
+    discoverBtn.addEventListener("click", () => {
+
+        couponWrapper.classList.add("show");
+
+        discoverBtn.innerHTML = "YA LO VISTE";
+
+        discoverBtn.disabled = true;
+
+        setTimeout(() => {
+
+            couponWrapper.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }, 150);
+
+    });
+
+    const toast = document.getElementById("toast");
+
+    let toastTimeout;
+
+    function showToast(message) {
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimeout);
+
+        toastTimeout = setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2200);
+
+    }
+
+</script>
+
+</body>
+</html>
