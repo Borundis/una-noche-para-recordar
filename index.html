@@ -506,6 +506,8 @@
       <div class="hero-actions">
         <a class="primary-btn" href="#confirmar">Confirmar asistencia</a>
         <a class="secondary-btn" href="#detalles">Ver detalles</a>
+        <a class="secondary-btn" href="https://wa.me/?text=Te%20invito%20a%20mi%20invitaci%C3%B3n%20digital%3A%20https%3A%2F%2Fborundis.github.io%2Funa-noche-para-recordar%2F" target="_blank" rel="noopener noreferrer">Compartir</a>
+        <button id="copyLinkBtn" class="secondary-btn" type="button">Copiar enlace</button>
       </div>
 
       <div class="scroll">Desliza ↓</div>
@@ -648,6 +650,18 @@
       setTimeout(() => {
         couponWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 150);
+    });
+
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const inviteURL = 'https://borundis.github.io/una-noche-para-recordar/';
+
+    copyLinkBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(inviteURL);
+        showToast('Enlace copiado');
+      } catch (error) {
+        showToast('No se pudo copiar');
+      }
     });
   </script>
 </body>
